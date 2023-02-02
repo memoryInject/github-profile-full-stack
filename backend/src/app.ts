@@ -5,6 +5,26 @@ import cookieSession from 'cookie-session';
 import cors from 'cors';
 import axios from 'axios';
 
+interface Profile {
+  login: string;
+  avatarUrl: string;
+  name: string;
+  location: string;
+  email?: string | void;
+  publicRepos: number;
+  privateRepos: number;
+}
+
+interface Repo {
+  name: string;
+  fullName: string;
+  htmlUrl: string;
+  description: string;
+  private: boolean;
+  language: void | string;
+  followers: number;
+}
+
 export default () => {
   const app = express();
 
@@ -61,11 +81,57 @@ export default () => {
         },
       });
 
-      console.log(data);
-      res.send(data);
+      const userProfile: Profile = {
+        login: data.login,
+        avatarUrl: data.avatar_url,
+        name: data.name,
+        location: data.location,
+        email: data.email,
+        publicRepos: data.public_repos,
+        privateRepos: data.total_private_repos,
+      };
+
+      console.log(userProfile);
+      return res.send(userProfile);
     }
 
-    res.status(400).send({});
+    res.status(400).send({ success: false });
+  });
+
+  app.get('/api/v1/', (_req: Request, res: Response) => {
+    res.send({ access: true });
+  });
+
+  // Get user-repos
+  app.get('/api/v1/getUserRepo', async (req: Request, res: Response) => {
+    if (req.session && req.session.access_token) {
+      const { data } = await axios.get(
+        'https://api.github.com/user/repos?per_page=2&page=1',
+        {
+          headers: {
+            Authorization: 'Bearer ' + req.session.access_token,
+          },
+        }
+      );
+
+      // console.log(data);
+      const repos: Repo[] = data.map((repo: any) => {
+        return {
+          name: repo.name,
+          fullName: repo.full_name,
+          htmlUrl: repo.html_url,
+          description: repo.description,
+          private: repo.private,
+          language: repo.language,
+          followers: repo.watchers,
+        };
+      });
+
+      console.log(repos);
+      return res.send({ page: 1, perPage: 5, repos });
+    }
+
+    res.status(400).send({ success: false });
   });
 
   app.get('/api/v1/', (_req: Request, res: Response) => {
