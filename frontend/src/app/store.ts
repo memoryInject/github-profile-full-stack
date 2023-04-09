@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import authReducer from '../features/auth/authSlice';
+import repoReducer from '../features/repo/repoSlice';
 import { apiSlice } from '../features/auth/authAPISlice';
 import { profileApiSlice } from '../features/profile/profileAPISlice';
 import { repoApiSlice } from '../features/repo/repoAPISlice';
@@ -9,6 +10,7 @@ export const store = configureStore({
   reducer: {
     counter: counterReducer,
     auth: authReducer,
+    repo: repoReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
     [profileApiSlice.reducerPath]: profileApiSlice.reducer,
     [repoApiSlice.reducerPath]: repoApiSlice.reducer,

@@ -4,6 +4,10 @@ interface Access {
   access: boolean;
 }
 
+interface Logout {
+  success: boolean;
+}
+
 export const apiSlice = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
@@ -13,11 +17,16 @@ export const apiSlice = createApi({
     return {
       fetchAccess: builder.query<Access, string>({
         query(code) {
-          return `/getAccessToken?code=${code}`;
+          return `/auth?code=${code}`;
+        },
+      }),
+      logout: builder.query<Logout, void>({
+        query() {
+          return '/logout';
         },
       }),
     };
   },
 });
 
-export const { useFetchAccessQuery } = apiSlice;
+export const { useFetchAccessQuery, useLogoutQuery } = apiSlice;

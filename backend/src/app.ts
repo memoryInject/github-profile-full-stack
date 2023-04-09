@@ -8,9 +8,11 @@ import axios from 'axios';
 interface Profile {
   login: string;
   avatarUrl: string;
+  htmlUrl: string;
   name: string;
   location: string;
   email?: string | void;
+  bio?: string | void;
   publicRepos: number;
   privateRepos: number;
 }
@@ -43,7 +45,7 @@ export default () => {
   );
 
   // Get access token
-  app.get('/api/v1/getAccessToken', async (req: Request, res: Response) => {
+  app.get('/api/v1/auth', async (req: Request, res: Response) => {
     console.log(req.query.code);
 
     if (req.session && req.session.access_token) {
@@ -73,7 +75,7 @@ export default () => {
   });
 
   // Get userdata
-  app.get('/api/v1/getUserData', async (req: Request, res: Response) => {
+  app.get('/api/v1/user', async (req: Request, res: Response) => {
     if (req.session && req.session.access_token) {
       const { data } = await axios.get('https://api.github.com/user', {
         headers: {
@@ -84,9 +86,11 @@ export default () => {
       const userProfile: Profile = {
         login: data.login,
         avatarUrl: data.avatar_url,
+        htmlUrl: data.html_url,
         name: data.name,
         location: data.location,
         email: data.email,
+        bio: data.bio,
         publicRepos: data.public_repos,
         privateRepos: data.total_private_repos,
       };
@@ -98,15 +102,11 @@ export default () => {
     res.status(400).send({ success: false });
   });
 
-  app.get('/api/v1/', (_req: Request, res: Response) => {
-    res.send({ access: true });
-  });
-
   // Get user-repos
-  app.get('/api/v1/getUserRepo', async (req: Request, res: Response) => {
+  app.get('/api/v1/repo', async (req: Request, res: Response) => {
     if (req.session && req.session.access_token) {
       const { data } = await axios.get(
-        'https://api.github.com/user/repos?per_page=2&page=1',
+        `https://api.github.com/user/repos?per_page=5&page=${req.query.page}`,
         {
           headers: {
             Authorization: 'Bearer ' + req.session.access_token,
@@ -128,10 +128,16 @@ export default () => {
       });
 
       console.log(repos);
-      return res.send({ page: 1, perPage: 5, repos });
+      return res.send({ page: req.query.page, perPage: 5, repos });
     }
 
     res.status(400).send({ success: false });
+  });
+
+  app.get('/api/v1/logout', async (req: Request, res: Response) => {
+    req.session = null;
+
+    res.send({ success: true });
   });
 
   app.get('/api/v1/', (_req: Request, res: Response) => {

@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-interface RepoData {
+export interface RepoData {
   name: string;
   fullName: string;
   htmlUrl: string;
   description: string;
   private: boolean;
-  language: void | string;
+  language: string;
   followers: number;
 }
 
@@ -23,9 +23,9 @@ export const repoApiSlice = createApi({
   }),
   endpoints(builder) {
     return {
-      fetchUserRepo: builder.query<Repo[], boolean | void>({
-        query() {
-          return '/getUserRepo';
+      fetchUserRepo: builder.query<Repo, number | void>({
+        query(page = 1) {
+          return `/repo?page=${page}`;
         },
       }),
     };
