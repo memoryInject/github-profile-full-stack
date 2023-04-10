@@ -4,7 +4,8 @@ module.exports = function(app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://localhost:8000',
+      // API_HOST is setup when running on docker
+      target: process.env.API_HOST || 'http://localhost:8000',
       changeOrigin: true,
     })
   );
