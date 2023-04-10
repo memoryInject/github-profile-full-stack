@@ -44,6 +44,13 @@ export default () => {
     })
   );
 
+  // Get client id
+  app.get('/api/v1/client', (_req: Request, res: Response) => {
+    const clientId = process.env.CLIENT_ID;
+
+    res.send({ clientId });
+  });
+
   // Get access token
   app.get('/api/v1/auth', async (req: Request, res: Response) => {
     console.log(req.query.code);

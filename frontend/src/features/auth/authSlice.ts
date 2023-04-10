@@ -1,17 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const CLIENT_ID = 'a3052da166fd96e7f027';
-
 const access = localStorage.getItem('access') ? true : false;
 
 interface AuthState {
   access: boolean;
-  clientId: string;
 }
 
 const initialState: AuthState = {
   access,
-  clientId: CLIENT_ID,
 };
 
 const authSlice = createSlice({
@@ -25,8 +21,8 @@ const authSlice = createSlice({
       } else {
         localStorage.removeItem('access');
       }
-    }
-  }
+    },
+  },
 });
 
 export const { setAccess } = authSlice.actions;

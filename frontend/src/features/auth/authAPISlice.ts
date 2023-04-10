@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+interface Client {
+  clientId: string;
+}
+
 interface Access {
   access: boolean;
 }
@@ -15,6 +19,11 @@ export const apiSlice = createApi({
   }),
   endpoints(builder) {
     return {
+      fetchClient: builder.query<Client, boolean | void>({
+        query() {
+          return '/client';
+        },
+      }),
       fetchAccess: builder.query<Access, string>({
         query(code) {
           return `/auth?code=${code}`;
@@ -29,4 +38,5 @@ export const apiSlice = createApi({
   },
 });
 
-export const { useFetchAccessQuery, useLogoutQuery } = apiSlice;
+export const { useFetchClientQuery, useFetchAccessQuery, useLogoutQuery } =
+  apiSlice;

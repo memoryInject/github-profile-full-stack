@@ -12,6 +12,7 @@ const App = () => {
       <Container className="py-4">
         <Routes>
           <Route path="/" element={<HomeScreen />} />
+          <Route path="/(\\?code=.*)" element={<HomeScreen />} />
           <Route path="/pages/:pageNum" element={<HomeScreen />} />
           <Route path="/pages/" element={<HomeScreen />} />
           <Route path="/logout" element={<LogoutScreen />} />
