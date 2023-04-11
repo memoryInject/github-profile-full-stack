@@ -3,6 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useAppSelector } from '../app/hooks';
+import GithubLogo from './GithubLogo';
 
 const Header = () => {
   const access = useAppSelector((state) => state.auth.access);
@@ -11,7 +12,9 @@ const Header = () => {
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
         <LinkContainer to="/">
-          <Navbar.Brand className="px-4">Github Profile</Navbar.Brand>
+          <Navbar.Brand className="px-4">
+            <GithubLogo /> &nbsp;Github Profile
+          </Navbar.Brand>
         </LinkContainer>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
