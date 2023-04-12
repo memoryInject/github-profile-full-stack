@@ -10,7 +10,7 @@ export interface RepoData {
   followers: number;
 }
 
-interface Repo {
+export interface Repo {
   page: number;
   perPage: number;
   repos: RepoData[];
