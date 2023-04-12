@@ -15,13 +15,13 @@ interface Profile {
 export const profileApiSlice = createApi({
   reducerPath: 'profileApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api/v1',
+    baseUrl: '/api/v1/user',
   }),
   endpoints(builder) {
     return {
       fetchUserProfile: builder.query<Profile, boolean | void>({
         query() {
-          return '/user';
+          return '/profile';
         },
       }),
     };

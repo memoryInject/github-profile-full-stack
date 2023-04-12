@@ -19,13 +19,13 @@ interface Repo {
 export const repoApiSlice = createApi({
   reducerPath: 'repoApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api/v1',
+    baseUrl: '/api/v1/user',
   }),
   endpoints(builder) {
     return {
       fetchUserRepo: builder.query<Repo, number | void>({
         query(page = 1) {
-          return `/repo?page=${page}`;
+          return `/repos?page=${page}`;
         },
       }),
     };

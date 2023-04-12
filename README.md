@@ -118,13 +118,13 @@ To run tests, run the following command
 #### Get client id
 
 ```http
-  GET /api/v1/client
+  GET /api/v1/auth/client-id
 ```
 
 #### Get access token
 
 ```http
-  GET /api/v1/auth?code=<code-recieved-from-github>
+  GET /api/v1/auth/get-access-token?code=<code-recieved-from-github>
 ```
 
 | Parameter | Type     | Description                       |
@@ -134,7 +134,7 @@ To run tests, run the following command
 #### Get user data
 
 ```http
-  GET /api/v1/user
+  GET /api/v1/user/profile
 ```
 
 The access token must be stored in the client cookie `{ access_token: string }` **Required**.
@@ -142,10 +142,16 @@ The access token must be stored in the client cookie `{ access_token: string }` 
 #### Get user repos data
 
 ```http
-  GET /api/v1/repo?page=1
+  GET /api/v1/user/repos?page=1
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `page`      | `number` | **Required**. Current page. 5 repos per page by default |
 
 The access token must be stored in the client cookie `{ access_token: string }` **Required**.
+
+#### Logout user
+
+```http
+  GET /api/v1/user/logout
+```

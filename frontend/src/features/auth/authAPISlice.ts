@@ -15,18 +15,18 @@ interface Logout {
 export const apiSlice = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api/v1',
+    baseUrl: '/api/v1/auth',
   }),
   endpoints(builder) {
     return {
       fetchClient: builder.query<Client, boolean | void>({
         query() {
-          return '/client';
+          return '/client-id';
         },
       }),
       fetchAccess: builder.query<Access, string>({
         query(code) {
-          return `/auth?code=${code}`;
+          return `/get-access-token?code=${code}`;
         },
       }),
       logout: builder.query<Logout, void>({
