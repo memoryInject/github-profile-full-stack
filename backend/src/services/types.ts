@@ -19,4 +19,3 @@ export interface Repo {
   language: void | string;
   followers: number;
 }
-

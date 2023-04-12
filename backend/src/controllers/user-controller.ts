@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
+import { createProfile } from '../services/qeries/profile';
+import { createRepos } from '../services/qeries/repos';
 import { Profile, Repo } from '../services/types';
 
 // Get user profile
@@ -28,6 +30,9 @@ export const getUserProfile = async (req: Request, res: Response) => {
         publicRepos: data.public_repos,
         privateRepos: data.total_private_repos,
       };
+
+      // Create user profile cache
+      await createProfile(req.session.id, userProfile);
 
       return res.send(userProfile);
     }
@@ -77,6 +82,13 @@ export const getUserRepos = async (req: Request, res: Response) => {
             followers: repo.watchers,
           };
         }
+      );
+
+      // Create user repos cache
+      await createRepos(
+        req.session.id,
+        parseInt(req.query.page as string),
+        repos
       );
 
       return res.send({ page: req.query.page, perPage: 5, repos });

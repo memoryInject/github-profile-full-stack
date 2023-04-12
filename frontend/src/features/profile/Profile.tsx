@@ -47,7 +47,7 @@ const Profile = () => {
               style={{ width: '150px' }}
             />
             <h1>{data.name}</h1>
-            <p>{data.login}</p>
+            <p className="text-muted fs-5 m-0">{data.login}</p>
           </Col>
           <Col className="p-4">
             <h4>Bio</h4>

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
+import { genId } from '../utils/generate-id';
 
 // Get client id
 export const getClientId = (_req: Request, res: Response) => {
@@ -36,7 +37,10 @@ export const getAccessToken = async (req: Request, res: Response) => {
 
     // If there is a access_token then set it on client cookie.
     if (req.session && data.access_token) {
+      const sessionId = genId();
+
       req.session.access_token = data.access_token;
+      req.session.id = sessionId;
     }
 
     res.send({ access: true });
