@@ -9,8 +9,16 @@ services:
     volumes:
       - /app/node_modules
       - ./backend:/app
+    environment:
+      - DOCKER_REDIS_URI=redis://redis:6379
+      - DEV_ENV=docker 
     ports:
       - 8000:8000
+    depends_on:
+      - redis
+
+  redis:
+      image: redis:6-alpine
 
   frontend:
     build:
