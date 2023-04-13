@@ -4,7 +4,22 @@ import { createProfile } from '../services/qeries/profile';
 import { createRepos } from '../services/qeries/repos';
 import { Profile, Repo } from '../services/types';
 
-// Get user profile
+/**
+ * @swagger
+ * /user/profile:
+ *   get:
+ *     tags:
+ *       - user
+ *     summary: Get user profile details
+ *     description: Get current user profile based on cookie session
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Profile'
+ */
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
     if (req.session && req.session.access_token) {
@@ -44,7 +59,41 @@ export const getUserProfile = async (req: Request, res: Response) => {
   }
 };
 
-// Get user repos
+/**
+ * @swagger
+ * /user/repos:
+ *   get:
+ *     tags:
+ *       - user
+ *     summary: Get user repos
+ *     description: Get current user repos based on cookie session, 5 repos per page
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: pagination page
+ *         required: true
+ *         schema:
+ *           type: number
+ *           example: 1
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 page:
+ *                   type: integer
+ *                   example: 1
+ *                 perPage:
+ *                   type: integer
+ *                   example: 5
+ *                 repos:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Repo'
+ */
 export const getUserRepos = async (req: Request, res: Response) => {
   try {
     if (req.session && req.session.access_token) {

@@ -1,10 +1,14 @@
 import express, { Request, Response } from 'express';
 import 'express-async-errors';
 import morgan from 'morgan';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUI from 'swagger-ui-express';
 import cookieSession from 'cookie-session';
 import cors from 'cors';
+
 import { authRouter } from './routes/auth-route';
 import { userRouter } from './routes/user-route';
+import { swaggerOptions } from './swagger-options';
 
 export default () => {
   const app = express();
@@ -21,6 +25,13 @@ export default () => {
       signed: false,
       secure: process.env.NODE_ENV === 'production',
     })
+  );
+
+  const swaggerDocs = swaggerJSDoc(swaggerOptions);
+  app.use(
+    '/api-docs',
+    swaggerUI.serve,
+    swaggerUI.setup(swaggerDocs, { explorer: true })
   );
 
   app.use('/api/v1/auth', authRouter);

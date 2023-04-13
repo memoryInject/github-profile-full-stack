@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./compose/test/backend/Dockerfile
+    command: /start.sh
+    volumes:
+      - /app/node_modules
+      - ./backend:/app
+    environment:
+      - DOCKER_REDIS_URI=redis://redis:6379
+      - DEV_ENV=docker 
+    ports:
+      - 8000:8000
+    depends_on:
+      - redis
+
+  redis:
+      image: redis:6-alpine
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./compose/test/frontend/Dockerfile
+    command: /start.sh
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    environment:
+      - API_HOST=http://backend:8000
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend

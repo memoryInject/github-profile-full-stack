@@ -2,14 +2,60 @@ import axios from 'axios';
 import { Request, Response } from 'express';
 import { genId } from '../utils/generate-id';
 
-// Get client id
+/**
+* @swagger
+* /auth/client-id:
+*   get:
+*     tags:
+*       - auth
+*     summary: Get github client id
+*     description: Client id is use for signup/login with github app
+*     responses:
+*       '200':
+*         description: OK
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 clientId:
+*                   type: string
+*                   example: '48217f52-8dd2-4170-bd87-cf18d5005aa6'
+ */
 export const getClientId = (_req: Request, res: Response) => {
   const clientId = process.env.CLIENT_ID;
 
   res.send({ clientId });
 };
 
-// Get access token
+/**
+* @swagger
+* /auth/get-access-token:
+*   get:
+*     tags:
+*       - auth
+*     summary: Get github access token
+*     description: Github access token used for acccessing user profile and repos
+*     parameters:
+*       - name: code
+*         in: query
+*         description: code from Github
+*         required: true
+*         schema:
+*           type: string
+*           example: '48217f52-8dd2-4170-bd87-cf18d5005aa6'
+*     responses:
+*       '200':
+*         description: OK
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 access:
+*                   type: boolean
+*                   example: true 
+ */
 export const getAccessToken = async (req: Request, res: Response) => {
   if (req.session && req.session.access_token) {
     return res.send({ access: true });
@@ -50,7 +96,26 @@ export const getAccessToken = async (req: Request, res: Response) => {
   }
 };
 
-// Logout user
+/**
+* @swagger
+* /auth/logout:
+*   get:
+*     tags:
+*       - auth
+*     summary: Logout current user 
+*     description: Clear out cookies 
+*     responses:
+*       '200':
+*         description: OK
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 success:
+*                   type: boolean
+*                   example: true 
+ */
 export const logout = (req: Request, res: Response) => {
   req.session = null;
 

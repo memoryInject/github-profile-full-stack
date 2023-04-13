@@ -4,6 +4,7 @@ import request from 'supertest';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import app from '../app';
+import { client } from '../services/redis/client';
 
 const configFile = path.join(process.cwd(), '.env.test.local');
 
@@ -139,6 +140,7 @@ afterAll(() => {
   // Clean up after all tests are done, preventing this
   // interception layer from affecting irrelevant tests.
   server.close();
+  client.disconnect();
 });
 
 declare global {
