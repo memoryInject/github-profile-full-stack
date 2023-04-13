@@ -1,7 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
-import { Link } from 'react-router-dom';
 
 interface RepoModalProps {
   name: string;

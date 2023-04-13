@@ -23,8 +23,8 @@ export const swaggerOptions = {
       },
     ],
     tags: [
-      { name: 'user', description: 'Operations about user' },
       { name: 'auth', description: 'Operations about auth' },
+      { name: 'user', description: 'Operations about user' },
     ],
     components: {
       securutySchemas: {
